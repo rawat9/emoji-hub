@@ -1,24 +1,28 @@
-import { Container, SimpleGrid, useDisclosure } from '@chakra-ui/react';
+import { Center, CircularProgress, Container, SimpleGrid, useDisclosure } from '@chakra-ui/react';
 import EmojiCard from './components/EmojiCard';
-import { useEffect, useState } from 'react';
-import { request } from './utils';
 import { Emoji } from './types/Emoji';
 import Nav from './components/Navbar';
 import Filter from './components/Filter';
+import { useQuery } from '@tanstack/react-query';
+import fetchAll from './api/fetchAll';
 
 function App() {
-  const [emojies, setEmojis] = useState<Emoji[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  useEffect(() => {
-    const fetchEmojies = async () => {
-      const response = await request<Emoji[]>('https://emojihub.yurace.pro/api/all', {
-        method: 'GET',
-      });
-      setEmojis(response.slice(0, 20));
-    };
-    void fetchEmojies();
+  const { isLoading, data } = useQuery<Emoji[]>({
+    queryKey: ['emojies'],
+    queryFn: fetchAll,
   });
+
+  if (isLoading) {
+    return (
+      <Center h='100vh'>
+        <CircularProgress isIndeterminate color='green.300' />
+      </Center>
+    );
+  }
+
+  const emojiesData = data || [];
 
   return (
     <>
@@ -26,7 +30,7 @@ function App() {
       <Filter isOpen={isOpen} onClose={onClose} />
       <Container maxW='container.xxl' p={10}>
         <SimpleGrid columns={{ base: 1, md: 3, lg: 4 }} spacing={10}>
-          {emojies.map((emoji, index) => (
+          {emojiesData.map((emoji, index) => (
             <EmojiCard key={index} emoji={emoji} />
           ))}
         </SimpleGrid>

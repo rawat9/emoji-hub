@@ -24,20 +24,10 @@ function Filter({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
           <DrawerHeader borderBottomWidth='1px'>Filter</DrawerHeader>
 
           <DrawerBody>
-            <Stack spacing='24px'>
+            <Stack>
               <Box>
                 <FormLabel htmlFor='category'>Select category</FormLabel>
                 <Select id='category'>
-                  {categories.map((category, index) => (
-                    <option key={index} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </Select>
-              </Box>
-              <Box>
-                <FormLabel htmlFor='groups'>Select groups</FormLabel>
-                <Select id='groups'>
                   {categories.map((category, index) => (
                     <option key={index} value={category}>
                       {category}
@@ -49,7 +39,13 @@ function Filter({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
           </DrawerBody>
 
           <DrawerFooter borderTopWidth='1px'>
-            <Button w={'full'} colorScheme='blue'>
+            <Button
+              w={'full'}
+              colorScheme='blue'
+              onClick={() => {
+                onClose();
+              }}
+            >
               Apply filters
             </Button>
           </DrawerFooter>
