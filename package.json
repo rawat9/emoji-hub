@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://rawat9.github.io/emohi-hub",
+  "homepage": "https://rawat9.github.io/emoji-hub",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
